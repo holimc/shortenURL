@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Pluto Backend Assignment</title>
+</head>
+
+<body>
+<header>
+    <h1>URL 단축하기</h1>
+</header>
+<main>
+    <div class="input-title">원본 URL</div>
+    <input type="text" id="destinationUrl" name="destinationUrl" class="url-input" placeholder="https://www.scinapse.io/" />
+    <button class="url-button" onclick="getUrl()">단축 URL 생성</button>
+</main>
+</body>
+
+<script>
+    function getUrl(){
+        var data = { destinationUrl: $("#destinationUrl").val() }
+
+        $.ajax({
+            url: "/api/shorten",
+            data: JSON.stringify(data),
+            type: "POST",
+            contentType: 'application/json; charset=utr-8',
+            dataType: "text"
+        }).done(function(data){
+            let response = "<p>단축된 URL : <a href="+ data + " target='_blank'>" + data + </a></p>";
+            $("#result").empty();
+            $("#result").append(response);
+        }).fail(function(){
+            let response = "<p> 변환에 실패했습니다. </p>";
+            $("#result").empty();
+            $("#result").append(response);
+        })
+    }
+</script>
+</html>
